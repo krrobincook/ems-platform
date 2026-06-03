@@ -41,7 +41,7 @@ export const loginUser = async (email, password) => {
     }
 
     const accessToken = generateToken(user);
-    const refreshToken = generateRefreshToken(user); 
+    const refreshToken = generateRefreshToken(user);
 
     const userResponse = user.toObject();
     delete userResponse.password;

@@ -35,7 +35,6 @@ export const loginSchema = z.object({
         .min(1, 'Password is required')
 });
 
-
 export const validate = (schema) => async (req, res, next) => {
     try {
         await schema.parseAsync(req.body);
