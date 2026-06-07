@@ -22,8 +22,43 @@ export const createEmployee = async (employeeData) => {
     return newEmployee;
 };
 
-export const getAllEmployees = async () => {
-    return await Employee.find().populate('user', '-password');
+export const getAllEmployees = async (searchTerm = '') => {
+    if (!searchTerm) {
+        return await Employee.find().populate('user', '-password');
+    }
+
+    const regex = new RegExp(searchTerm, 'i');
+
+    const employees = await Employee.aggregate([
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user'
+            }
+        },
+        {
+            $unwind: '$user'
+        },
+        {
+            $match: {
+                $or: [
+                    { employeeId: regex },
+                    { 'user.firstName': regex },
+                    { 'user.lastName': regex },
+                    { 'user.email': regex }
+                ]
+            }
+        },
+        {
+            $project: {
+                'user.password': 0
+            }
+        }
+    ]);
+
+    return employees;
 };
 
 export const getEmployeeById = async (id) => {

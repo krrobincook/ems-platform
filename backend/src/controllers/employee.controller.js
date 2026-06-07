@@ -28,7 +28,14 @@ export const createEmployee = async (req, res) => {
 
 export const getAllEmployees = async (req, res) => {
     try {
-        const employees = await employeeService.getAllEmployees();
+        const searchTerm = req.query.search || '';
+        const employees = await employeeService.getAllEmployees(searchTerm);
+        if (searchTerm && employees.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Only search employee using name, id and email'
+            });
+        }
         return res.status(200).json({
             success: true,
             message: 'Employees retrieved successfully',
