@@ -1,5 +1,6 @@
 import { Employee } from '../models/employee.model.js';
 import { User } from '../models/user.model.js';
+import mongoose from 'mongoose';
 
 export const createEmployee = async (employeeData) => {
     const userExists = await User.findById(employeeData.user);
@@ -26,7 +27,12 @@ export const getAllEmployees = async () => {
 };
 
 export const getEmployeeById = async (id) => {
-    const employee = await Employee.findById(id).populate('user', '-password');
+    const query = { $or: [{ employeeId: id }] };
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        query.$or.push({ _id: id });
+    }
+
+    const employee = await Employee.findOne(query).populate('user', '-password');
     if (!employee) {
         throw new Error('Employee not found');
     }
@@ -50,8 +56,13 @@ export const updateEmployee = async (id, updateData) => {
         delete updateData.employeeId;
     }
 
-    const updatedEmployee = await Employee.findByIdAndUpdate(
-        id, 
+    const query = { $or: [{ employeeId: id }] };
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        query.$or.push({ _id: id });
+    }
+
+    const updatedEmployee = await Employee.findOneAndUpdate(
+        query, 
         updateData, 
         { new: true, runValidators: true }
     ).populate('user', '-password');
@@ -64,7 +75,12 @@ export const updateEmployee = async (id, updateData) => {
 };
 
 export const deleteEmployee = async (id) => {
-    const deletedEmployee = await Employee.findByIdAndDelete(id);
+    const query = { $or: [{ employeeId: id }] };
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        query.$or.push({ _id: id });
+    }
+
+    const deletedEmployee = await Employee.findOneAndDelete(query);
     if (!deletedEmployee) {
         throw new Error('Employee not found');
     }
