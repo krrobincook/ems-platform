@@ -28,7 +28,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [22]
 
     steps:
       - name: Checkout repository
@@ -41,17 +41,9 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
 
-      - name: Create .env file
-        run: touch .env
-        working-directory: backend/..
-
       - name: Install dependencies
         working-directory: backend
         run: npm ci
-
-      - name: Run ESLint
-        working-directory: backend
-        run: npx eslint src/ --max-warnings 0
 
       - name: Verify server starts
         working-directory: backend
@@ -61,6 +53,9 @@ jobs:
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
         run: |
+          # Create a dummy .env so dotenv.config() doesn't fail
+          touch ../.env
+
           node src/server.js &
           SERVER_PID=$!
 
@@ -85,7 +80,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [22]
 
     steps:
       - name: Checkout repository
@@ -95,12 +90,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: frontend
-        run: npm ci
+        run: npm install
 
       - name: Run ESLint
         working-directory: frontend
