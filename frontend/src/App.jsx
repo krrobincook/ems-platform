@@ -1,5 +1,5 @@
 // write some content to check tailwind setup
-import React from 'react';
+
 import './index.css';
 
 function App() {
