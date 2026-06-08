@@ -24,8 +24,8 @@ export const createEmployeeSchema = z.object({
         .positive('Salary must be a positive number'),
         
     dateOfJoining: z.coerce.date({
-        required_error: "Date of joining is required",
-        invalid_type_error: "Invalid date format for Date of Joining",
+        required_error: 'Date of joining is required',
+        invalid_type_error: 'Invalid date format for Date of Joining',
     }),
     
     phoneNumber: z.string()

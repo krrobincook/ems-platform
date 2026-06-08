@@ -21,7 +21,7 @@ export const createEmployee = async (req, res) => {
         }
         return res.status(500).json({
             success: false,
-            message: error.message || "Internal server error"
+            message: error.message || 'Internal server error'
         });
     }
 };
@@ -44,7 +44,7 @@ export const getAllEmployees = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: error.message || "Internal server error"
+            message: error.message || 'Internal server error'
         });
     }
 };
@@ -66,7 +66,7 @@ export const getEmployeeById = async (req, res) => {
         }
         return res.status(500).json({
             success: false,
-            message: error.message || "Internal server error"
+            message: error.message || 'Internal server error'
         });
     }
 };
@@ -88,7 +88,7 @@ export const getEmployeeByUserId = async (req, res) => {
         }
         return res.status(500).json({
             success: false,
-            message: error.message || "Internal server error"
+            message: error.message || 'Internal server error'
         });
     }
 };
@@ -110,7 +110,7 @@ export const updateEmployee = async (req, res) => {
         }
         return res.status(500).json({
             success: false,
-            message: error.message || "Internal server error"
+            message: error.message || 'Internal server error'
         });
     }
 };
@@ -132,7 +132,7 @@ export const deleteEmployee = async (req, res) => {
         }
         return res.status(500).json({
             success: false,
-            message: error.message || "Internal server error"
+            message: error.message || 'Internal server error'
         });
     }
 };
