@@ -21,10 +21,10 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd "mongosh -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 15s
+          --health-timeout 10s
+          --health-retries 10
 
     strategy:
       matrix:
@@ -40,6 +40,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: backend/package-lock.json
+
+      - name: Create .env file
+        run: touch .env
+        working-directory: backend/..
 
       - name: Install dependencies
         working-directory: backend
