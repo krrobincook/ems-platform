@@ -136,3 +136,26 @@ export const deleteEmployee = async (req, res) => {
         });
     }
 };
+
+export const getMyProfile = async(req, res) => {
+    try {
+        const userId = req.user._id;
+        const employeeProfile = await employeeService.getEmployeeByUserId(userId);
+        return res.status(200).json({
+            success: true,
+            message: 'Employee profile retrieved successfully',
+            data: employeeProfile
+        })
+    } catch (error) {
+        if (error.message === 'Employee record not found for this user') {
+            return res.status(404).json({
+                success: false,
+                message: 'Profile not found. Administrator might not have assigned you an employee ID yet.'
+            })
+        }
+        return res.status(500).json({
+            success: false,
+            message: error.message || 'Internal server error'
+        })
+    }
+}

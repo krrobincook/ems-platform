@@ -13,7 +13,6 @@ export const authorizeRoles = (...allowedRoles) => {
                 message: `Access denied. This action requires one of the following roles: ${allowedRoles.join(', ')}`
             });
         }
-
         next();
     };
 };
