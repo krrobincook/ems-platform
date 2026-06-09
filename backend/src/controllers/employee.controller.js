@@ -145,17 +145,17 @@ export const getMyProfile = async(req, res) => {
             success: true,
             message: 'Employee profile retrieved successfully',
             data: employeeProfile
-        })
+        });
     } catch (error) {
         if (error.message === 'Employee record not found for this user') {
             return res.status(404).json({
                 success: false,
                 message: 'Profile not found. Administrator might not have assigned you an employee ID yet.'
-            })
+            });
         }
         return res.status(500).json({
             success: false,
             message: error.message || 'Internal server error'
-        })
+        });
     }
-}
+};
