@@ -28,7 +28,6 @@ export const applyLeave = async (employeeId, leaveData) => {
     const startOfYear = new Date(new Date().getFullYear(), 0, 1);
     const endOfYear = new Date(new Date().getFullYear(), 11, 31, 23, 59, 59);
 
-
     const approvedLeaves = await Leave.find({
         employee: employeeId,
         status: 'APPROVED',
