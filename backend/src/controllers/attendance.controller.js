@@ -4,8 +4,8 @@ import * as employeeService from '../services/employee.service.js';
 export const checkIn = async (req, res) => {
     try {
         let employeeId = req.body.employee;
-        if (!employeeId && req.user && req.user._id) {
-            const employee = await employeeService.getEmployeeByUserId(req.user._id);
+        if (!employeeId && req.user && req.user.id) {
+            const employee = await employeeService.getEmployeeByUserId(req.user.id);
             employeeId = employee._id;
         }
 
@@ -32,8 +32,8 @@ export const checkIn = async (req, res) => {
 export const checkOut = async (req, res) => {
     try {
         let employeeId = req.body.employee;
-        if (!employeeId && req.user && req.user._id) {
-            const employee = await employeeService.getEmployeeByUserId(req.user._id);
+        if (!employeeId && req.user && req.user.id) {
+            const employee = await employeeService.getEmployeeByUserId(req.user.id);
             employeeId = employee._id;
         }
 
@@ -59,11 +59,11 @@ export const checkOut = async (req, res) => {
 
 export const getMyAttendance = async (req, res) => {
     try {
-        if (!req.user || !req.user._id) {
+        if (!req.user || !req.user.id) {
              return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
 
-        const employee = await employeeService.getEmployeeByUserId(req.user._id);
+        const employee = await employeeService.getEmployeeByUserId(req.user.id);
         
         const { startDate, endDate } = req.query;
         const records = await attendanceService.getAttendanceByEmployee(employee._id, startDate, endDate);

@@ -139,7 +139,7 @@ export const deleteEmployee = async (req, res) => {
 
 export const getMyProfile = async(req, res) => {
     try {
-        const userId = req.user._id;
+        const userId = req.user.id;
         const employeeProfile = await employeeService.getEmployeeByUserId(userId);
         return res.status(200).json({
             success: true,

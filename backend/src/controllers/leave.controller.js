@@ -5,8 +5,8 @@ export const applyLeave = async (req, res) => {
     try {
         let employeeId = req.body.employee;
         
-        if (!employeeId && req.user && req.user._id) {
-            const employee = await employeeService.getEmployeeByUserId(req.user._id);
+        if (!employeeId && req.user && req.user.id) {
+            const employee = await employeeService.getEmployeeByUserId(req.user.id);
             employeeId = employee._id;
         }
 
@@ -32,12 +32,14 @@ export const applyLeave = async (req, res) => {
 export const updateLeaveStatus = async (req, res) => {
     try {
         const leaveId = req.params.id;
-        const { status } = req.body;
-        const managerId = req.user ? req.user._id : null;
+        let { status } = req.body;
+        const managerId = req.user ? req.user.id : null;
 
         if (!status) {
             return res.status(400).json({ success: false, message: 'Status is required' });
         }
+
+        status = status.toUpperCase();
 
         const updatedLeave = await leaveService.updateLeaveStatus(leaveId, status, managerId);
         
@@ -56,16 +58,22 @@ export const updateLeaveStatus = async (req, res) => {
 
 export const getMyLeaveSummary = async (req, res) => {
     try {
-        if (!req.user || !req.user._id) {
+        if (!req.user || !req.user.id) {
             return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
 
-        const employee = await employeeService.getEmployeeByUserId(req.user._id);
+        const employee = await employeeService.getEmployeeByUserId(req.user.id);
         const summary = await leaveService.getEmployeeLeaveSummary(employee._id);
+
+        const approved = summary.requests.filter(r => r.status === 'APPROVED').length;
+        const rejected = summary.requests.filter(r => r.status === 'REJECTED').length;
+        const pending = summary.requests.filter(r => r.status === 'PENDING').length;
+
+        const dynamicMessage = `Leave summary retrieved. You have taken ${summary.totalTaken} days with ${summary.balance} days remaining. Status: ${approved} Approved, ${rejected} Rejected, ${pending} Pending.`;
 
         return res.status(200).json({
             success: true,
-            message: 'Leave summary retrieved successfully',
+            message: dynamicMessage,
             data: summary
         });
     } catch (error) {
