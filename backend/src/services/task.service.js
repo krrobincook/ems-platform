@@ -1,5 +1,5 @@
-import { Task } from "../models/task.model.js";
-import { Employee } from "../models/employee.model.js";
+import { Task } from '../models/task.model.js';
+import { Employee } from '../models/employee.model.js';
 
 export const createTask = async(taskData) => {
     const task = await Task.create(taskData);
