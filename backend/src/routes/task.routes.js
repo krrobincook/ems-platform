@@ -7,12 +7,12 @@ const router = Router();
 
 router.use(authenticate);
 
-router.post('/', authorizeRoles('ADMIN', 'MANAGER'), taskController.createTask);
-router.get('/', authorizeRoles('ADMIN', 'MANAGER'), taskController.getAllTasks);
-router.delete('/:id', authorizeRoles('ADMIN', 'MANAGER'), taskController.deleteTask);
+router.post('/', authorizeRoles('ADMIN', 'HR'), taskController.createTask);
+router.get('/', authorizeRoles('ADMIN', 'HR'), taskController.getAllTasks);
+router.delete('/:id', authorizeRoles('ADMIN', 'HR'), taskController.deleteTask);
 
-router.get('/my', authorizeRoles('EMPLOYEE', 'ADMIN', 'MANAGER'), taskController.getMyTasks);
-router.get('/:id', authorizeRoles('EMPLOYEE', 'ADMIN', 'MANAGER'), taskController.getTaskById);
-router.put('/:id', authorizeRoles('EMPLOYEE', 'ADMIN', 'MANAGER'), taskController.updateTask);
+router.get('/my', authorizeRoles('EMPLOYEE', 'ADMIN', 'HR'), taskController.getMyTasks);
+router.get('/:id', authorizeRoles('EMPLOYEE', 'ADMIN', 'HR'), taskController.getTaskById);
+router.put('/:id', authorizeRoles('EMPLOYEE', 'ADMIN', 'HR'), taskController.updateTask);
 
 export default router;

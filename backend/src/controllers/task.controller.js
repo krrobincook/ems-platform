@@ -100,6 +100,9 @@ export const updateTask = async (req, res) => {
             data: updatedTask
         });
     } catch (error) {
+        if (error.message === 'Task not found') {
+            return res.status(404).json({ success: false, message: error.message });
+        }
         return res.status(400).json({
             success: false,
             message: error.message || 'Error updating task'
@@ -115,6 +118,9 @@ export const deleteTask = async (req, res) => {
             message: 'Task deleted successfully'
         });
     } catch (error) {
+        if (error.message === 'Task not found') {
+            return res.status(404).json({ success: false, message: error.message });
+        }
         return res.status(400).json({
             success: false,
             message: error.message || 'Error deleting task'

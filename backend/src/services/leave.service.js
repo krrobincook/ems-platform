@@ -117,5 +117,5 @@ export const getAllLeaves = async (status) => {
     return await Leave.find(query).populate({
         path: 'employee',
         populate: { path: 'user', select: 'firstName lastName email' }
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: -1 }); 
 };
