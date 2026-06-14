@@ -5,8 +5,7 @@ import { Leave } from '../models/leave.model.js';
 import { Task } from '../models/task.model.js';
 
 export const getDashboardStats = async () => {
-    try {
-        const totalEmployees = await Employee.countDocuments();
+    const totalEmployees = await Employee.countDocuments();
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -31,7 +30,7 @@ export const getDashboardStats = async () => {
             COMPLETED: 0
         };
         tasks.forEach(t => {
-            if (taskStats.hasOwnProperty(t._id)) {
+            if (Object.prototype.hasOwnProperty.call(taskStats, t._id)) {
                 taskStats[t._id] = t.count;
             }
         });
@@ -50,14 +49,10 @@ export const getDashboardStats = async () => {
             },
             tasks: taskStats
         };
-    } catch (error) {
-        throw error;
-    }
 };
 
 export const getEmployeeDashboardStats = async (userId) => {
-    try {
-        const employee = await Employee.findOne({ user: userId });
+    const employee = await Employee.findOne({ user: userId });
         if (!employee) {
             throw new Error('Employee profile not found');
         }
@@ -99,7 +94,7 @@ export const getEmployeeDashboardStats = async (userId) => {
         };
         
         tasks.forEach(t => {
-            if (taskStats.hasOwnProperty(t._id)) {
+            if (Object.prototype.hasOwnProperty.call(taskStats, t._id)) {
                 taskStats[t._id] = t.count;
             }
         });
@@ -115,14 +110,10 @@ export const getEmployeeDashboardStats = async (userId) => {
             },
             tasks: taskStats
         };
-    } catch (error) {
-        throw error;
-    }
 };
 
 export const getManagerDashboardStats = async (userId) => {
-    try {
-        const objectId = new mongoose.Types.ObjectId(userId);
+    const objectId = new mongoose.Types.ObjectId(userId);
 
         const tasks = await Task.aggregate([
             { $match: { createdBy: objectId } },
@@ -138,7 +129,7 @@ export const getManagerDashboardStats = async (userId) => {
         let totalTasksAssigned = 0;
         
         tasks.forEach(t => {
-            if (taskStats.hasOwnProperty(t._id)) {
+            if (Object.prototype.hasOwnProperty.call(taskStats, t._id)) {
                 taskStats[t._id] = t.count;
                 totalTasksAssigned += t.count;
             }
@@ -173,7 +164,4 @@ export const getManagerDashboardStats = async (userId) => {
                 onLeaveToday: attendancesToday.filter(a => a.status === 'LEAVE').length
             }
         };
-    } catch (error) {
-        throw error;
-    }
 };

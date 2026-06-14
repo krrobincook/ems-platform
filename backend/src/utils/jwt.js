@@ -38,6 +38,7 @@ export const verifyToken = (token) => {
             process.env.ACCESS_TOKEN_SECRET
         );
     } catch (error) {
+        console.error('JWT verify error:', error.message);
         return null;
     }
 };
