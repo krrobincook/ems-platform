@@ -6,6 +6,7 @@ import employeeRoutes from './routes/employee.routes.js';
 import attendanceRoutes from './routes/attendance.routes.js';
 import leaveRoutes from './routes/leave.routes.js';
 import taskRoutes from './routes/task.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 
 dotenv.config({path: '../.env'});
 await connectDB();
@@ -19,6 +20,7 @@ app.use('/api/employees', employeeRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leave', leaveRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 
 app.listen(process.env.PORT, () => {
